@@ -6,13 +6,14 @@
 #
 Name     : pcsc-lite
 Version  : 1.8.25
-Release  : 2
+Release  : 3
 URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2
 Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2
 Source99 : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2.asc
 Summary  : PC/SC smart card interface
 Group    : Development/Tools
 License  : BSD-3-Clause
+Requires: pcsc-lite-autostart = %{version}-%{release}
 Requires: pcsc-lite-bin = %{version}-%{release}
 Requires: pcsc-lite-lib = %{version}-%{release}
 Requires: pcsc-lite-license = %{version}-%{release}
@@ -33,6 +34,14 @@ docs/ifdhandler-3.pdf
 Requires: A C compiler
 Make, linker tools
 Lex (Lexical Analyzer).
+
+%package autostart
+Summary: autostart components for the pcsc-lite package.
+Group: Default
+
+%description autostart
+autostart components for the pcsc-lite package.
+
 
 %package bin
 Summary: bin components for the pcsc-lite package.
@@ -106,7 +115,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554838670
+export SOURCE_DATE_EPOCH=1555520102
 export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -119,14 +128,22 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1554838670
+export SOURCE_DATE_EPOCH=1555520102
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcsc-lite
 cp COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/COPYING
 %make_install
+## install_append content
+mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
+ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/pcscd.socket
+## install_append end
 
 %files
 %defattr(-,root,root,-)
+
+%files autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/sockets.target.wants/pcscd.socket
 
 %files bin
 %defattr(-,root,root,-)
@@ -168,5 +185,6 @@ cp COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/COPYING
 
 %files services
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/sockets.target.wants/pcscd.socket
 /usr/lib/systemd/system/pcscd.service
 /usr/lib/systemd/system/pcscd.socket

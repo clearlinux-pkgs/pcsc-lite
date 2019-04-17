@@ -1,0 +1,2 @@
+mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
+ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/pcscd.socket
