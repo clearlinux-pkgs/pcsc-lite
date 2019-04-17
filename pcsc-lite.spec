@@ -6,7 +6,7 @@
 #
 Name     : pcsc-lite
 Version  : 1.8.25
-Release  : 3
+Release  : 5
 URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2
 Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2
 Source99 : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.25.tar.bz2.asc
@@ -74,6 +74,14 @@ Requires: pcsc-lite-man = %{version}-%{release}
 doc components for the pcsc-lite package.
 
 
+%package extras
+Summary: extras components for the pcsc-lite package.
+Group: Default
+
+%description extras
+extras components for the pcsc-lite package.
+
+
 %package lib
 Summary: lib components for the pcsc-lite package.
 Group: Libraries
@@ -115,7 +123,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555520102
+export SOURCE_DATE_EPOCH=1555520942
 export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -128,7 +136,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1555520102
+export SOURCE_DATE_EPOCH=1555520942
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcsc-lite
 cp COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/COPYING
@@ -147,11 +155,12 @@ ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/p
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/pcsc-spy
+%exclude /usr/bin/pcsc-spy
 /usr/bin/pcscd
 
 %files dev
 %defattr(-,root,root,-)
+%exclude /usr/lib64/libpcscspy.so
 /usr/include/PCSC/debuglog.h
 /usr/include/PCSC/ifdhandler.h
 /usr/include/PCSC/pcsclite.h
@@ -159,19 +168,26 @@ ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/p
 /usr/include/PCSC/winscard.h
 /usr/include/PCSC/wintypes.h
 /usr/lib64/libpcsclite.so
-/usr/lib64/libpcscspy.so
 /usr/lib64/pkgconfig/libpcsclite.pc
 
 %files doc
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/pcsc\-lite/*
 
-%files lib
+%files extras
 %defattr(-,root,root,-)
-/usr/lib64/libpcsclite.so.1
-/usr/lib64/libpcsclite.so.1.0.0
+/usr/bin/pcsc-spy
+/usr/lib64/libpcscspy.so
 /usr/lib64/libpcscspy.so.0
 /usr/lib64/libpcscspy.so.0.0.0
+/usr/share/man/man1/pcsc-spy.1
+
+%files lib
+%defattr(-,root,root,-)
+%exclude /usr/lib64/libpcscspy.so.0
+%exclude /usr/lib64/libpcscspy.so.0.0.0
+/usr/lib64/libpcsclite.so.1
+/usr/lib64/libpcsclite.so.1.0.0
 
 %files license
 %defattr(0644,root,root,0755)
@@ -179,7 +195,7 @@ ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/p
 
 %files man
 %defattr(0644,root,root,0755)
-/usr/share/man/man1/pcsc-spy.1
+%exclude /usr/share/man/man1/pcsc-spy.1
 /usr/share/man/man5/reader.conf.5
 /usr/share/man/man8/pcscd.8
 
