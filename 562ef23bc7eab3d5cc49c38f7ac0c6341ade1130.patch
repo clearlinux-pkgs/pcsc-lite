@@ -1,0 +1,31 @@
+From 562ef23bc7eab3d5cc49c38f7ac0c6341ade1130 Mon Sep 17 00:00:00 2001
+From: Ludovic Rousseau <ludovic.rousseau@free.fr>
+Date: Wed, 8 Jan 2020 22:29:49 +0100
+Subject: [PATCH] Use /run instead of /var/run by default
+
+From https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard :
+" In FHS 3.0, /var/run is replaced by /run; a system should either
+continue to provide a /var/run directory, or provide a symbolic link
+from /var/run to /run, for backwards compatibility. "
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 627b1eb4..262fd76d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -372,11 +372,11 @@ fi
+ # --enable-ipcdir=DIR
+ AC_ARG_ENABLE(ipcdir,
+   AS_HELP_STRING([--enable-ipcdir=DIR],[directory containing IPC files
+-				  (default /var/run/pcscd)]),
++				  (default /run/pcscd)]),
+ [ipcdir="${enableval}"], [ipcdir=false])
+ 
+ if test x${ipcdir} = xfalse ; then
+-	ipcdir="/var/run/pcscd"
++	ipcdir="/run/pcscd"
+ fi
+ AC_DEFINE_UNQUOTED(USE_IPCDIR, "$ipcdir", [directory containing IPC files])
+ PCSCLITE_FEATURES="${PCSCLITE_FEATURES} ipcdir=${ipcdir}"
