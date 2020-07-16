@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x78A1B4DFE8F9C57E (rousseau@debian.org)
 #
 Name     : pcsc-lite
-Version  : 1.8.26
-Release  : 8
-URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.26.tar.bz2
-Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.26.tar.bz2
-Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.8.26.tar.bz2.asc
+Version  : 1.9.0
+Release  : 9
+URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2
+Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2
+Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2.asc
 Summary  : PC/SC smart card interface
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -20,19 +20,11 @@ Requires: pcsc-lite-license = %{version}-%{release}
 Requires: pcsc-lite-man = %{version}-%{release}
 Requires: pcsc-lite-services = %{version}-%{release}
 Requires: ccid
-BuildRequires : automake
-BuildRequires : automake-dev
 BuildRequires : ccid
 BuildRequires : flex
-BuildRequires : gettext-bin
-BuildRequires : libtool
-BuildRequires : libtool-dev
-BuildRequires : m4
-BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(libsystemd)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(libusb-1.0)
-Patch1: 562ef23bc7eab3d5cc49c38f7ac0c6341ade1130.patch
 
 %description
 The purpose of PCSC Lite is to provide a Windows(R) SCard interface in a very
@@ -121,22 +113,21 @@ services components for the pcsc-lite package.
 
 
 %prep
-%setup -q -n pcsc-lite-1.8.26
-cd %{_builddir}/pcsc-lite-1.8.26
-%patch1 -p1
+%setup -q -n pcsc-lite-1.9.0
+cd %{_builddir}/pcsc-lite-1.9.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1583433992
+export SOURCE_DATE_EPOCH=1594867820
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
-%reconfigure --disable-static
+%configure --disable-static
 make  %{?_smp_mflags}
 
 %check
@@ -147,10 +138,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1583433992
+export SOURCE_DATE_EPOCH=1594867820
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcsc-lite
-cp %{_builddir}/pcsc-lite-1.8.26/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/pcsc-lite-1.9.0/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
 %make_install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
