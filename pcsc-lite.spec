@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x78A1B4DFE8F9C57E (rousseau@debian.org)
 #
 Name     : pcsc-lite
-Version  : 1.9.0
-Release  : 9
-URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2
-Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2
-Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.0.tar.bz2.asc
+Version  : 1.9.1
+Release  : 10
+URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.1.tar.bz2
+Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.1.tar.bz2
+Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.1.tar.bz2.asc
 Summary  : PC/SC smart card interface
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -113,15 +113,15 @@ services components for the pcsc-lite package.
 
 
 %prep
-%setup -q -n pcsc-lite-1.9.0
-cd %{_builddir}/pcsc-lite-1.9.0
+%setup -q -n pcsc-lite-1.9.1
+cd %{_builddir}/pcsc-lite-1.9.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1594867820
+export SOURCE_DATE_EPOCH=1613505769
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$FFLAGS -fno-lto "
@@ -135,13 +135,13 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1594867820
+export SOURCE_DATE_EPOCH=1613505769
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcsc-lite
-cp %{_builddir}/pcsc-lite-1.9.0/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/pcsc-lite-1.9.1/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
 %make_install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
