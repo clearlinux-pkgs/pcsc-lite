@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x78A1B4DFE8F9C57E (rousseau@debian.org)
 #
 Name     : pcsc-lite
-Version  : 1.9.4
-Release  : 13
-URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.4.tar.bz2
-Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.4.tar.bz2
-Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.4.tar.bz2.asc
+Version  : 1.9.5
+Release  : 14
+URL      : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.5.tar.bz2
+Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.5.tar.bz2
+Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-1.9.5.tar.bz2.asc
 Summary  : PC/SC smart card interface
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -20,7 +20,6 @@ Requires: pcsc-lite-license = %{version}-%{release}
 Requires: pcsc-lite-man = %{version}-%{release}
 Requires: pcsc-lite-services = %{version}-%{release}
 Requires: ccid
-BuildRequires : ccid
 BuildRequires : flex
 BuildRequires : pkgconfig(libsystemd)
 BuildRequires : pkgconfig(libudev)
@@ -113,15 +112,15 @@ services components for the pcsc-lite package.
 
 
 %prep
-%setup -q -n pcsc-lite-1.9.4
-cd %{_builddir}/pcsc-lite-1.9.4
+%setup -q -n pcsc-lite-1.9.5
+cd %{_builddir}/pcsc-lite-1.9.5
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1633107495
+export SOURCE_DATE_EPOCH=1646282607
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$FFLAGS -fno-lto "
@@ -138,10 +137,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1633107495
+export SOURCE_DATE_EPOCH=1646282607
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcsc-lite
-cp %{_builddir}/pcsc-lite-1.9.4/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
+cp %{_builddir}/pcsc-lite-1.9.5/COPYING %{buildroot}/usr/share/package-licenses/pcsc-lite/12f0c48a0be5fb271ccd2f1de671e747c511166f
 %make_install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
