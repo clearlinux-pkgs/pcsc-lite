@@ -9,7 +9,7 @@
 #
 Name     : pcsc-lite
 Version  : 2.2.0
-Release  : 20
+Release  : 21
 URL      : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz
 Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz
 Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz.asc
@@ -149,7 +149,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1715012642
+export SOURCE_DATE_EPOCH=1715013721
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CLEAR_INTERMEDIATE_FCFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -190,6 +190,9 @@ DESTDIR=%{buildroot} ninja -C builddir install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
 ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/pcscd.socket
+mkdir -p %{buildroot}/usr/bin
+mv %{buildroot}/sbin %{buildroot}/usr/bin
+
 ## install_append end
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
@@ -203,7 +206,7 @@ ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/p
 %files bin
 %defattr(-,root,root,-)
 /V3/usr/bin/pcscd
-/sbin/pcscd
+/usr/bin/sbin/pcscd
 
 %files data
 %defattr(-,root,root,-)
