@@ -8,11 +8,11 @@
 # Source0 file verified with key 0x78A1B4DFE8F9C57E (rousseau@debian.org)
 #
 Name     : pcsc-lite
-Version  : 2.2.0
-Release  : 23
-URL      : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz
-Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz
-Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.0.tar.xz.asc
+Version  : 2.2.1
+Release  : 24
+URL      : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.1.tar.xz
+Source0  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.1.tar.xz
+Source1  : https://pcsclite.apdu.fr/files/pcsc-lite-2.2.1.tar.xz.asc
 Source2  : 78A1B4DFE8F9C57E.pkey
 Summary  : PC/SC smart card interface
 Group    : Development/Tools
@@ -26,6 +26,7 @@ Requires: pcsc-lite-man = %{version}-%{release}
 Requires: pcsc-lite-services = %{version}-%{release}
 Requires: ccid
 BuildRequires : buildreq-meson
+BuildRequires : doxygen
 BuildRequires : flex
 BuildRequires : gnupg
 BuildRequires : pkgconfig(libudev)
@@ -138,10 +139,10 @@ chmod 700 .gnupg
 gpg --homedir .gnupg --import %{SOURCE2}
 gpg --homedir .gnupg --status-fd 1 --verify %{SOURCE1} %{SOURCE0} > gpg.status
 grep -E '^\[GNUPG:\] (GOODSIG|EXPKEYSIG) 78A1B4DFE8F9C57E' gpg.status
-%setup -q -n pcsc-lite-2.2.0
-cd %{_builddir}/pcsc-lite-2.2.0
+%setup -q -n pcsc-lite-2.2.1
+cd %{_builddir}/pcsc-lite-2.2.1
 pushd ..
-cp -a pcsc-lite-2.2.0 buildavx2
+cp -a pcsc-lite-2.2.1 buildavx2
 popd
 
 %build
@@ -149,7 +150,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1715194999
+export SOURCE_DATE_EPOCH=1715196278
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CLEAR_INTERMEDIATE_FCFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -191,8 +192,7 @@ DESTDIR=%{buildroot} ninja -C builddir install
 mkdir -p %{buildroot}/usr/lib/systemd/system/sockets.target.wants
 ln -s ../pcscd.socket %{buildroot}/usr/lib/systemd/system/sockets.target.wants/pcscd.socket
 mkdir -p %{buildroot}/usr/bin
-mv %{buildroot}/sbin/* %{buildroot}/usr/bin
-
+mv %{buildroot}/usr/sbin/* %{buildroot}/usr/bin/
 ## install_append end
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
